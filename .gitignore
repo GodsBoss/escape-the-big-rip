@@ -1,2 +1,5 @@
 /dist/*
 !/dist/.gitkeep
+
+# I can't even, what is this?
+/.gimp-2.8
