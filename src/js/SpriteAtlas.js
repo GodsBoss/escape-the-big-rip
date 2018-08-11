@@ -67,6 +67,20 @@ const sprites = {
     w: 21,
     h: 21,
     frames: 4
+  },
+  'ship-space': {
+    x: 0,
+    y: 38,
+    w: 5,
+    h: 5,
+    frames: 4
+  },
+  'ship-shield': {
+    x: 0,
+    y: 43,
+    w: 5,
+    h: 5,
+    frames: 4
   }
 }
 

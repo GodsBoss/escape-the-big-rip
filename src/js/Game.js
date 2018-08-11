@@ -100,7 +100,9 @@ const PLAYING = {
         offsetX: -6,
         offsetY: -6,
         xSpeed: 10,
-        ySpeed: -10
+        ySpeed: -10,
+        space: 5,
+        shield: 5
       }
     )
     game.getObjects().push(
@@ -118,21 +120,49 @@ const PLAYING = {
     game.data.currentScore = 0
   },
   tick: (game) => {
+    let objects =  game.getObjects()
     game.data.currentScore++
-    const ship = game.getObjects().find(byType('ship'))
+    const ship = objects.find(byType('ship'))
     const realXSpeed = ship.xSpeed / FPS
     const realYSpeed = ship.ySpeed / FPS
-    game.getObjects().forEach(
+    objects.forEach(
       (obj) => {
         if (typeof obj.animation === 'number') {
           obj.animation += 0.1
         }
-        if (obj.type != "ship") {
+        if (obj.type != "ship" && !obj.shipAttached) {
           obj.x -= ship.xSpeed / FPS
           obj.y -= ship.ySpeed / FPS
         }
       }
     )
+
+    ensureShipOrbs(objects, 'ship-shield', ship.shield, ship.x, ship.y)
+    ensureShipOrbs(objects, 'ship-space', ship.space, ship.x, ship.y)
+  }
+}
+
+function ensureShipOrbs(objects, type, targetValue, x, y) {
+  const orbs = objects.filter(byType(type))
+  const add = targetValue - orbs.length
+  const remove = -add
+  for (var i = 0; i < add; i++) {
+    objects.push(
+      {
+        type: type,
+        x: x,
+        y: y,
+        offsetX: -2,
+        offsetY: -2,
+        animation: 0,
+        shipAttached: true
+      }
+    )
+  }
+  for (var i = 0; i < remove; i++) {
+    let i = objects.findIndex(byType(type))
+    removeObjectByIndex(objects, i)
+    // TODO: Add fading effect.
   }
 }
 
@@ -172,6 +202,11 @@ function byID(id) {
   return function(obj) {
     return obj.id === id
   }
+}
+
+function removeObjectByIndex(objects, index) {
+  objects[index] = objects[objects.length - 1]
+  objects.pop()
 }
 
 const FPS = 25
