@@ -73,7 +73,7 @@ const sprites = {
     y: 38,
     w: 5,
     h: 5,
-    frames: 4
+    frames: 8
   },
   'ship-shield': {
     x: 0,
