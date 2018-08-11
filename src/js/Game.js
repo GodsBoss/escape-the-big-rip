@@ -92,6 +92,15 @@ const PLAYING = {
         y: 0
       }
     )
+    game.getObjects().push(
+      {
+        type: "ship",
+        x: 10,
+        y: 50,
+        offsetX: -6,
+        offsetY: -6
+      }
+    )
   },
   start: (game) => {
     game.data.currentScore = 0

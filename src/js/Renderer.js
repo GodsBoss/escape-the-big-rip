@@ -50,7 +50,7 @@ class Renderer {
     )
     sprites.forEach(
       (sprite) => {
-        this.context.drawImage(this.prescaled['' + this.scale][sprite.type + '_' + sprite.frame], sprite.x, sprite.y)
+        this.context.drawImage(this.prescaled['' + this.scale][sprite.type + '_' + sprite.frame], Math.floor(this.scale * sprite.x), Math.floor(this.scale * sprite.y))
       }
     )
   }
@@ -69,8 +69,8 @@ function toSprite(obj) {
   return {
     type: obj.type,
     frame: typeof obj.frame === "number" ? obj.frame : 0,
-    x: obj.x,
-    y: obj.y,
+    x: obj.x + (typeof obj.offsetX === "number" ? obj.offsetX : 0),
+    y: obj.y + (typeof obj.offsetY === "number" ? obj.offsetY : 0),
     z: typeof obj.z === "number" ? obj.z : 0
   }
 }
