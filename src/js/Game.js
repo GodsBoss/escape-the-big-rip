@@ -114,7 +114,7 @@ const PLAYING = {
   },
   start: (game) => {
     game.data.currentScore = 0
-    game.data.density = 0.01
+    game.data.density = 0.1
   },
   tick: (game) => {
     let objects =  game.getObjects()
@@ -178,6 +178,18 @@ const PLAYING = {
       objects.push(createRedDwarf(ship))
     }
 
+    const collidingObjectIndex = objects.findIndex(
+      (obj) => obj.dangerous && v.length(v.diff(ship, obj)) < obj.size + 6
+    )
+    if (collidingObjectIndex !== -1) {
+      ship.shield.add(-1)
+      removeObjectByIndex(objects, collidingObjectIndex)
+      if (ship.shield.getCurrent() < 0) {
+        game.nextState(GAME_OVER)
+        return
+      }
+    }
+
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
@@ -193,7 +205,9 @@ function createRedDwarf(ship) {
     y: rand.floatn(-100, 300),
     offsetX: -10,
     offsetY: -10,
-    animation: 0
+    animation: 0,
+    size: 8,
+    dangerous: true
   }
   let dv = v.add(
     v.scale(v.randomDirection(), 2),
