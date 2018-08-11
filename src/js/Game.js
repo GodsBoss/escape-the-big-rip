@@ -93,7 +93,9 @@ const PLAYING = {
       {
         type: "bg-playing",
         x: 0,
-        y: 0
+        y: 0,
+        z: -100000,
+        customSpeed: true
       }
     )
     game.getObjects().push(
