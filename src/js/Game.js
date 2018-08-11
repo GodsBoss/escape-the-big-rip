@@ -98,7 +98,9 @@ const PLAYING = {
         x: 10,
         y: 50,
         offsetX: -6,
-        offsetY: -6
+        offsetY: -6,
+        xSpeed: 10,
+        ySpeed: -10
       }
     )
     game.getObjects().push(
@@ -117,10 +119,17 @@ const PLAYING = {
   },
   tick: (game) => {
     game.data.currentScore++
+    const ship = game.getObjects().find(byType('ship'))
+    const realXSpeed = ship.xSpeed / FPS
+    const realYSpeed = ship.ySpeed / FPS
     game.getObjects().forEach(
       (obj) => {
         if (typeof obj.animation === 'number') {
           obj.animation += 0.1
+        }
+        if (obj.type != "ship") {
+          obj.x -= ship.xSpeed / FPS
+          obj.y -= ship.ySpeed / FPS
         }
       }
     )
@@ -164,5 +173,7 @@ function byID(id) {
     return obj.id === id
   }
 }
+
+const FPS = 25
 
 export { Game }
