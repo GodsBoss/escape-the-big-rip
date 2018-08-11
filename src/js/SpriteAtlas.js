@@ -179,6 +179,20 @@ const sprites = {
     w: 31,
     h: 31,
     frames: 3
+  },
+  'powerup-space': {
+    x: 84,
+    y: 0,
+    w: 8,
+    h: 8,
+    frames: 4
+  },
+  'powerup-shield': {
+    x: 84,
+    y: 8,
+    w: 8,
+    h: 8,
+    frames: 4
   }
 }
 

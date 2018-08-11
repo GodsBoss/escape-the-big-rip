@@ -183,6 +183,9 @@ const PLAYING = {
     if (Math.random() < density) {
       objects.push(createRedGiant(ship))
     }
+    if (Math.random() < 0.1 / FPS) {
+      objects.push(createPowerup())
+    }
 
     const collidingObjectIndex = objects.findIndex(
       (obj) => obj.dangerous && v.length(v.diff(ship, obj)) < obj.size + 6
@@ -196,11 +199,39 @@ const PLAYING = {
       }
     }
 
+    const collidingPowerupIndex = objects.findIndex(
+      (obj) => obj.powerup && v.length(v.diff(ship, obj)) < obj.size + 6
+    )
+    if (collidingPowerupIndex !== -1) {
+      const powerupType = objects[collidingPowerupIndex].type
+      if (powerupType === 'powerup-shield') {
+        ship.shield.add(1)
+      }
+      if (powerupType === 'powerup-space') {
+        ship.space.add(1)
+      }
+      removeObjectByIndex(objects, collidingPowerupIndex)
+    }
+
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
       )
     )
+  }
+}
+
+function createPowerup() {
+  return {
+    type: Math.random() < 0.5 ? 'powerup-shield' : 'powerup-space',
+    x: 75,
+    y: rand.floatn(-100, 300),
+    z: 600,
+    offsetX: -4,
+    offsetY: -4,
+    animation: 0,
+    size: 4,
+    powerup: true
   }
 }
 
