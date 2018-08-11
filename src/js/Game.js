@@ -230,11 +230,12 @@ function createPowerup() {
 }
 
 function createDangerousStar(ship) {
+  const type = ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])]
   const star = {
-    type: ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])],
+    type: type,
     x: 75,
     y: rand.floatn(-100, 300),
-    z: 500,
+    z: 500 + additionalZPerStar[type],
     offsetX: -10,
     offsetY: -10,
     animation: 0,
@@ -248,6 +249,12 @@ function createDangerousStar(ship) {
   star.dx = dv.x
   star.dy = dv.y
   return star
+}
+
+const additionalZPerStar = {
+  'red-giant': 0,
+  'red-dwarf': 10,
+  'neutron-star': 20
 }
 
 function randomStar() {
