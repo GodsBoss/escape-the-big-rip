@@ -178,7 +178,6 @@ const PLAYING = {
 
     moveByDepth(ship, objects)
 
-    console.log(objects.length)
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
