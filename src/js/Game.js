@@ -1,4 +1,5 @@
 import { IntValue } from './IntValue'
+import rand from './random'
 import v from './vector'
 
 class Game {
@@ -145,7 +146,7 @@ const PLAYING = {
         if (typeof obj.animation === 'number') {
           obj.animation += 0.1
         }
-        if (obj.type != "ship" && !obj.shipAttached) {
+        if (obj.type != "ship" && !obj.shipAttached && !obj.customSpeed) {
           obj.x -= ship.xSpeed / FPS
           obj.y -= ship.ySpeed / FPS
         }
@@ -170,7 +171,45 @@ const PLAYING = {
         }
       }
     )
+
+    if (Math.random() < 0.1) {
+      objects.push(randomStar())
+    }
+
+    moveByDepth(ship, objects)
+
+    console.log(objects.length)
+    game.setObjects(
+      objects.filter(
+        (obj) => typeof obj.x !== 'number' || obj.x > -20
+      )
+    )
   }
+}
+
+function randomStar() {
+  const minDepth = 1
+  const maxDepth = 3
+  const starDepth = rand.floatn(minDepth, maxDepth)
+  return {
+    type: 'star-' + (starDepth > (maxDepth + minDepth) / 2 ? 'small' : 'big') + '-' + rand.char('abcdefg'),
+    x: 160,
+    y: -100 + Math.random() * 300,
+    z: -1,
+    depth: starDepth,
+    customSpeed: true
+  }
+}
+
+function moveByDepth(ship, objects) {
+  objects.filter(
+    (obj) => obj.customSpeed && typeof obj.depth === "number"
+  ).forEach(
+    (obj) => {
+      obj.x -= ship.xSpeed / FPS / obj.depth
+      obj.y -= ship.ySpeed / FPS / obj.depth
+    }
+  )
 }
 
 function ensureShipOrbs(objects, type, targetValue, x, y) {

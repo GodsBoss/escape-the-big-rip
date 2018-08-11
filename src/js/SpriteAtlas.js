@@ -81,7 +81,91 @@ const sprites = {
     w: 5,
     h: 5,
     frames: 4
-  }
+  },
+  'star-big-a': {
+    x: 0,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-b': {
+    x: 3,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-c': {
+    x: 6,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-d': {
+    x: 9,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-e': {
+    x: 12,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-f': {
+    x: 15,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-big-g': {
+    x: 18,
+    y: 48,
+    w: 3,
+    h: 3
+  },
+  'star-small-a': {
+    x: 0,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-b': {
+    x: 3,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-c': {
+    x: 6,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-d': {
+    x: 9,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-e': {
+    x: 12,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-f': {
+    x: 15,
+    y: 51,
+    w: 3,
+    h: 3
+  },
+  'star-small-g': {
+    x: 18,
+    y: 51,
+    w: 3,
+    h: 3
+  },
 }
 
 export { defaultSpriteAtlas }
