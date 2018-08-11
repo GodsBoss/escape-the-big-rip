@@ -171,18 +171,18 @@ const PLAYING = {
 
     moveByDepth(ship, objects)
 
+    game.data.density += 0.0001 / FPS
+
+    let density = game.data.density
+    if (Math.random() < density) {
+      objects.push(createRedDwarf(ship))
+    }
+
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
       )
     )
-
-    game.data.density += 0.0001 / FPS
-
-    let density = game.data.density
-    if (Math.random() < density) {
-      game.getObjects().push(createRedDwarf(ship))
-    }
   }
 }
 
