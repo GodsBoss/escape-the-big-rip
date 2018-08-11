@@ -126,6 +126,18 @@ const PLAYING = {
     let objects =  game.getObjects()
     game.data.currentScore++
     const ship = objects.find(byType('ship'))
+
+    game.getEvents().forEach(
+      (event) => {
+        if (event.type === 'keypress' && event.charCode === 32) {
+          if (ship.space.getCurrent() >= 1) {
+            ship.space.add(-1)
+            ship.ySpeed *= -1
+          }
+        }
+      }
+    )
+
     const realXSpeed = ship.xSpeed / FPS
     const realYSpeed = ship.ySpeed / FPS
     objects.forEach(
