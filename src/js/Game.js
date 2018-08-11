@@ -157,10 +157,10 @@ const PLAYING = {
     objects.forEach(
       (obj) => {
         if (typeof obj.dx === 'number') {
-          obj.x += obj.dx
+          obj.x += obj.dx / FPS
         }
         if (typeof obj.dy === 'number') {
-          obj.y += obj.dy
+          obj.y += obj.dy / FPS
         }
       }
     )
@@ -255,13 +255,13 @@ function gatherAroundShip(ship, orbs) {
         y: orb.dy
       }
       v.apply(v.scale(d, 0.95), d)
-      v.apply(v.add(d, v.scale(v.randomDirection(), 1/FPS)), d)
+      v.apply(v.add(d, v.scale(v.randomDirection(), 2/FPS)), d)
       const diff = v.diff(ship, orb)
       if (v.length(diff) < 8) {
-        v.apply(v.add(d, v.scale(v.normalize(diff), 5/FPS)), d)
+        v.apply(v.add(d, v.scale(v.normalize(diff), 8/FPS)), d)
       }
       if (v.length(diff) > 10) {
-        v.apply(v.add(d, v.scale(v.normalize(diff), -5/FPS)), d)
+        v.apply(v.add(d, v.scale(v.normalize(diff), -8/FPS)), d)
       }
       orb.dx = d.x
       orb.dy = d.y
