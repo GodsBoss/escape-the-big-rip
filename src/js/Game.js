@@ -111,19 +111,10 @@ const PLAYING = {
         shield: new IntValue(4, 8, 0.1 / FPS)
       }
     )
-    game.getObjects().push(
-      {
-        type: "red-dwarf",
-        x: 50,
-        y: 50,
-        offsetX: -10,
-        offsetY: -10,
-        animation: 0
-      }
-    )
   },
   start: (game) => {
     game.data.currentScore = 0
+    game.data.density = 0.01
   },
   tick: (game) => {
     let objects =  game.getObjects()
@@ -185,6 +176,22 @@ const PLAYING = {
         (obj) => typeof obj.x !== 'number' || obj.x > -20
       )
     )
+
+    game.data.density += 0.0001 / FPS
+
+    let density = game.data.density
+    if (Math.random() < density) {
+      game.getObjects().push(
+        {
+          type: "red-dwarf",
+          x: 175,
+          y: rand.floatn(-100, 300),
+          offsetX: -10,
+          offsetY: -10,
+          animation: 0
+        }
+      )
+    }
   }
 }
 
@@ -195,7 +202,7 @@ function randomStar() {
   return {
     type: 'star-' + (starDepth > (maxDepth + minDepth) / 2 ? 'small' : 'big') + '-' + rand.char('abcdefg'),
     x: 160,
-    y: -100 + Math.random() * 300,
+    y: rand.floatn(-100, 300),
     z: -1,
     depth: starDepth,
     customSpeed: true
