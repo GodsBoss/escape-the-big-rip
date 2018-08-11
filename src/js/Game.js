@@ -172,7 +172,7 @@ function ensureShipOrbs(objects, type, targetValue, x, y) {
         dy: dv.y,
         offsetX: -2,
         offsetY: -2,
-        animation: 0,
+        animation: Math.random(),
         shipAttached: true
       }
     )
