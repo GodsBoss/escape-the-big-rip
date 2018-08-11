@@ -4,6 +4,7 @@ class Renderer {
   constructor(canvas, srcImage, atlas) {
     this.context = canvas.getContext('2d')
     this.atlas = atlas
+    this.toSprite = toSprite(atlas)
     this.scale = 1
 
     // Keys are scale (with 1 being unscaled, hence used as base for scaling).
@@ -44,7 +45,7 @@ class Renderer {
   render(game) {
     this.context.fillStye = '#000000'
     this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height)
-    const sprites = game.getObjects().map(toSprite)
+    const sprites = game.getObjects().map(this.toSprite)
     sprites.sort(
       (first, second) => first.z - second.z
     )
@@ -65,13 +66,17 @@ function toImageDataIndex(x, y, w, h, offset) {
   return 4*(x + y * w) + offset
 }
 
-function toSprite(obj) {
-  return {
-    type: obj.type,
-    frame: typeof obj.frame === "number" ? obj.frame : 0,
-    x: obj.x + (typeof obj.offsetX === "number" ? obj.offsetX : 0),
-    y: obj.y + (typeof obj.offsetY === "number" ? obj.offsetY : 0),
-    z: typeof obj.z === "number" ? obj.z : 0
+function toSprite(atlas) {
+  return function(obj) {
+    const info = atlas.get(obj.type)
+
+    return {
+      type: obj.type,
+      frame: Math.floor(typeof obj.animation === 'number' ? obj.animation : 0) % info.frames,
+      x: obj.x + (typeof obj.offsetX === "number" ? obj.offsetX : 0),
+      y: obj.y + (typeof obj.offsetY === "number" ? obj.offsetY : 0),
+      z: typeof obj.z === "number" ? obj.z : 0
+    }
   }
 }
 

@@ -101,12 +101,29 @@ const PLAYING = {
         offsetY: -6
       }
     )
+    game.getObjects().push(
+      {
+        type: "red-dwarf",
+        x: 50,
+        y: 50,
+        offsetX: -10,
+        offsetY: -10,
+        animation: 0
+      }
+    )
   },
   start: (game) => {
     game.data.currentScore = 0
   },
   tick: (game) => {
     game.data.currentScore++
+    game.getObjects().forEach(
+      (obj) => {
+        if (typeof obj.animation === 'number') {
+          obj.animation += 0.1
+        }
+      }
+    )
   }
 }
 

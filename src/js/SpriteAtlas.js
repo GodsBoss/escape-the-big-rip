@@ -3,13 +3,10 @@ class SpriteAtlas {
     this.sprites = sprites
   }
 
-  get(id, animationFrame) {
-    const base = this.sprites[i]
+  get(id) {
+    const base = this.sprites[id]
     return {
-      x: base.x + base.w * animationFrame,
-      y: base.y,
-      w: base.w,
-      h: base.h
+      frames: typeof base.frames === 'number' ? base.frames : 1
     }
   }
 
@@ -18,7 +15,7 @@ class SpriteAtlas {
     for(var type in this.sprites) {
       const curr = this.sprites[type]
       const frames = typeof curr.frames === 'number' ? curr.frames : 1
-      for (let frame = 0; frame < frames; frame++) {
+      for (var frame = 0; frame < frames; frame++) {
         list.push(
           {
             type: type,
@@ -63,6 +60,13 @@ const sprites = {
     y: 0,
     w: 13,
     h: 13
+  },
+  'red-dwarf': {
+    x: 0,
+    y: 17,
+    w: 21,
+    h: 21,
+    frames: 4
   }
 }
 
