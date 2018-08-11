@@ -1,3 +1,7 @@
+import { Game } from './Game'
+import { Renderer } from './Renderer'
+import { start as startRunner } from './Runner'
+
 window.addEventListener(
   'load',
   bootstrap,
@@ -16,5 +20,6 @@ function bootstrap(e) {
 
 function init(image) {
   return function(e) {
+    startRunner(new Game(), new Renderer())
   }
 }
