@@ -84,6 +84,15 @@ const TITLE = {
 // Currently playing.
 const PLAYING = {
   id: () => "playing",
+  init: (game) => {
+    game.getObjects().push(
+      {
+        type: "bg-playing",
+        x: 0,
+        y: 0
+      }
+    )
+  },
   start: (game) => {
     game.data.currentScore = 0
   },
@@ -95,6 +104,15 @@ const PLAYING = {
 // Game over (player lost).
 const GAME_OVER = {
   id: () => "game_over",
+  init: (game) => {
+    game.getObjects().push(
+      {
+        type: "bg-game-over",
+        x: 0,
+        y: 0
+      }
+    )
+  },
   start: (game) => {
     game.data.highScore = Math.max(game.data.highScore, game.data.currentScore)
   },
