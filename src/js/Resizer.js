@@ -3,9 +3,6 @@ class Resizer {
     this.window = window
     this.size = size
     this.listeners = []
-
-    // this.setMinimalFactor(1)
-    // this.setMargin(0, 0)
   }
 
   setMargin(horizontal, vertical) {
