@@ -166,6 +166,13 @@ const sprites = {
     w: 3,
     h: 3
   },
+  'neutron-star': {
+    x: 0,
+    y: 98,
+    w: 9,
+    h: 9,
+    frames: 4
+  }
 }
 
 export { defaultSpriteAtlas }
