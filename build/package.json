@@ -1,0 +1,16 @@
+{
+  "name": "@godsboss/ld42-build",
+  "version": "0.0.1",
+  "author": "Timo Reitz",
+  "scripts": {
+    "build": "webpack-cli"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-loader": "^8.0.0-beta.2",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^2.0.14"
+  }
+}
