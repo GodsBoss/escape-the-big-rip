@@ -180,6 +180,9 @@ const PLAYING = {
     if (Math.random() < density) {
       objects.push(createNeutronStar(ship))
     }
+    if (Math.random() < density) {
+      objects.push(createRedGiant(ship))
+    }
 
     const collidingObjectIndex = objects.findIndex(
       (obj) => obj.dangerous && v.length(v.diff(ship, obj)) < obj.size + 6
@@ -232,6 +235,21 @@ function createNeutronStar(ship) {
     offsetY: -2,
     animation: 0,
     size: 3,
+    dangerous: true
+  }
+  return star
+}
+
+function createRedGiant(ship) {
+  const star = {
+    type: "red-giant",
+    x: 75,
+    y: rand.floatn(-100, 300),
+    z: 500,
+    offsetX: -15,
+    offsetY: -15,
+    animation: 0,
+    size: 14,
     dangerous: true
   }
   return star

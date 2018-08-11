@@ -172,6 +172,13 @@ const sprites = {
     w: 9,
     h: 9,
     frames: 4
+  },
+  'red-giant': {
+    x: 0,
+    y: 107,
+    w: 31,
+    h: 31,
+    frames: 3
   }
 }
 
