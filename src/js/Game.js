@@ -3,6 +3,7 @@ class Game {
     this.data = {}
     this.objects = {}
     this.nextState(TITLE)
+    this.statesInitFinished = {}
     this.events = []
   }
 
@@ -13,18 +14,25 @@ class Game {
 
   nextState(state) {
     this.state = state
-    this.state.init(this)
+    if (typeof this.state.init === "function" && this.statesInitFinished !== true) {
+      this.statesInitFinished = true
+      this.state.init(this)
+    }
+    this.state.start(this)
   }
 
   // getObjects returns all objects of the current state.
   //
   // @return array
   getObjects() {
-    let objects = this.objects[this.state.id()]
-    if (!objects) {
-      objects = []
+    if (!this.objects[this.state.id()]) {
+      this.objects[this.state.id()] = []
     }
-    return objects
+    return this.objects[this.state.id()]
+  }
+
+  setObjects(objects) {
+    this.objects[this.state.id()] = objects
   }
 
   pushEvent(event) {
@@ -38,7 +46,9 @@ class Game {
 
 // Only for documentation purposes.
 class State {
+  // Optional
   init(game) {}
+  start(game) {}
   tick(game) {}
   id() {}
 }
@@ -47,6 +57,15 @@ class State {
 const TITLE = {
   id: () => "title",
   init: (game) => {
+    game.getObjects().push(
+      {
+        type: "bg-title",
+        x: 0,
+        y: 0
+      }
+    )
+  },
+  start: (game) => {
     if (typeof game.data.highScore != "number") {
       game.data.highScore = 0
     }
@@ -65,7 +84,7 @@ const TITLE = {
 // Currently playing.
 const PLAYING = {
   id: () => "playing",
-  init: (game) => {
+  start: (game) => {
     game.data.currentScore = 0
   },
   tick: (game) => {
@@ -76,7 +95,7 @@ const PLAYING = {
 // Game over (player lost).
 const GAME_OVER = {
   id: () => "game_over",
-  init: (game) => {
+  start: (game) => {
     game.data.highScore = Math.max(game.data.highScore, game.data.currentScore)
   },
   tick: (game) => {
@@ -87,6 +106,18 @@ const GAME_OVER = {
         }
       }
     )
+  }
+}
+
+function byType(type) {
+  return function(obj) {
+    return obj.type === type
+  }
+}
+
+function byID(id) {
+  return function(obj) {
+    return obj.id === id
   }
 }
 
