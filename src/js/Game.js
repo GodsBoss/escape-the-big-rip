@@ -181,18 +181,27 @@ const PLAYING = {
 
     let density = game.data.density
     if (Math.random() < density) {
-      game.getObjects().push(
-        {
-          type: "red-dwarf",
-          x: 175,
-          y: rand.floatn(-100, 300),
-          offsetX: -10,
-          offsetY: -10,
-          animation: 0
-        }
-      )
+      game.getObjects().push(createRedDwarf(ship))
     }
   }
+}
+
+function createRedDwarf(ship) {
+  const dwarf = {
+    type: "red-dwarf",
+    x: 75,
+    y: rand.floatn(-100, 300),
+    offsetX: -10,
+    offsetY: -10,
+    animation: 0
+  }
+  let dv = v.add(
+    v.scale(v.randomDirection(), 2),
+    v.scale(v.normalize(ship, dwarf), 3)
+  )
+  dwarf.dx = dv.x
+  dwarf.dy = dv.y
+  return dwarf
 }
 
 function randomStar() {
