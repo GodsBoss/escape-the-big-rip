@@ -6,8 +6,8 @@ class Game {
   constructor(eventQueue) {
     this.data = {}
     this.objects = {}
-    this.nextState(TITLE)
     this.statesInitFinished = {}
+    this.nextState(TITLE)
     this.events = []
   }
 
@@ -18,8 +18,8 @@ class Game {
 
   nextState(state) {
     this.state = state
-    if (typeof this.state.init === "function" && this.statesInitFinished !== true) {
-      this.statesInitFinished = true
+    if (typeof this.state.init === "function" && this.statesInitFinished[state.id()] !== true) {
+      this.statesInitFinished[state.id()] = true
       this.state.init(this)
     }
     this.state.start(this)
