@@ -32,6 +32,12 @@ function bootstrap(e) {
 
 function init(image) {
   return function(e) {
-    startRunner(new Game(), new Renderer())
+    const game = new Game()
+    window.addEventListener(
+      'keypress',
+      (event) => game.pushEvent(event),
+      false
+    )
+    startRunner(game, new Renderer())
   }
 }

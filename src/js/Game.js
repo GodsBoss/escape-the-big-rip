@@ -1,12 +1,14 @@
 class Game {
-  constructor() {
+  constructor(eventQueue) {
     this.data = {}
     this.objects = {}
     this.nextState(TITLE)
+    this.events = []
   }
 
   tick() {
     this.state.tick(this)
+    this.events = []
   }
 
   nextState(state) {
@@ -23,6 +25,14 @@ class Game {
       objects = []
     }
     return objects
+  }
+
+  pushEvent(event) {
+    this.events.push(event)
+  }
+
+  getEvents() {
+    return this.events
   }
 }
 
@@ -41,7 +51,15 @@ const TITLE = {
       game.data.highScore = 0
     }
   },
-  tick: (game) => {}
+  tick: (game) => {
+    game.getEvents().forEach(
+      (event) => {
+        if (event.type == "keypress" && event.key == " ") {
+          game.nextState(PLAYING)
+        }
+      }
+    )
+  }
 }
 
 // Currently playing.
@@ -61,7 +79,15 @@ const GAME_OVER = {
   init: (game) => {
     game.data.highScore = Math.max(game.data.highScore, game.data.currentScore)
   },
-  tick: (game) => {}
+  tick: (game) => {
+    game.getEvents().forEach(
+      (event) => {
+        if (event.type == "keypress" && event.key == " ") {
+          game.nextState(TITLE)
+        }
+      }
+    )
+  }
 }
 
 export { Game }
