@@ -1,3 +1,4 @@
+import { IntValue } from './IntValue'
 import v from './vector'
 
 class Game {
@@ -103,8 +104,8 @@ const PLAYING = {
         offsetY: -6,
         xSpeed: 10,
         ySpeed: -10,
-        space: 5,
-        shield: 5
+        space: new IntValue(4.5, 8, 0.1 / FPS),
+        shield: new IntValue(4, 8, 0.1 / FPS)
       }
     )
     game.getObjects().push(
@@ -139,8 +140,11 @@ const PLAYING = {
       }
     )
 
-    ensureShipOrbs(objects, 'ship-shield', ship.shield, ship.x, ship.y)
-    ensureShipOrbs(objects, 'ship-space', ship.space, ship.x, ship.y)
+    ship.shield.tick()
+    ship.space.tick()
+
+    ensureShipOrbs(objects, 'ship-shield', ship.shield.getCurrent(), ship.x, ship.y)
+    ensureShipOrbs(objects, 'ship-space', ship.space.getCurrent(), ship.x, ship.y)
 
     gatherAroundShip(ship, objects.filter(byTypes(['ship-shield', 'ship-space'])))
 
