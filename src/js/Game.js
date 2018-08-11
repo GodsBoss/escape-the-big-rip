@@ -1,3 +1,5 @@
+import v from './vector'
+
 class Game {
   constructor(eventQueue) {
     this.data = {}
@@ -139,6 +141,19 @@ const PLAYING = {
 
     ensureShipOrbs(objects, 'ship-shield', ship.shield, ship.x, ship.y)
     ensureShipOrbs(objects, 'ship-space', ship.space, ship.x, ship.y)
+
+    gatherAroundShip(ship, objects.filter(byTypes(['ship-shield', 'ship-space'])))
+
+    objects.forEach(
+      (obj) => {
+        if (typeof obj.dx === 'number') {
+          obj.x += obj.dx
+        }
+        if (typeof obj.dy === 'number') {
+          obj.y += obj.dy
+        }
+      }
+    )
   }
 }
 
@@ -147,11 +162,14 @@ function ensureShipOrbs(objects, type, targetValue, x, y) {
   const add = targetValue - orbs.length
   const remove = -add
   for (var i = 0; i < add; i++) {
+    const dv = v.randomDirection()
     objects.push(
       {
         type: type,
         x: x,
         y: y,
+        dx: dv.x,
+        dy: dv.y,
         offsetX: -2,
         offsetY: -2,
         animation: 0,
@@ -164,6 +182,28 @@ function ensureShipOrbs(objects, type, targetValue, x, y) {
     removeObjectByIndex(objects, i)
     // TODO: Add fading effect.
   }
+}
+
+function gatherAroundShip(ship, orbs) {
+  orbs.forEach(
+    (orb) => {
+      var d = {
+        x: orb.dx,
+        y: orb.dy
+      }
+      v.apply(v.scale(d, 0.95), d)
+      v.apply(v.add(d, v.scale(v.randomDirection(), 1/FPS)), d)
+      const diff = v.diff(ship, orb)
+      if (v.length(diff) < 8) {
+        v.apply(v.add(d, v.scale(v.normalize(diff), 5/FPS)), d)
+      }
+      if (v.length(diff) > 10) {
+        v.apply(v.add(d, v.scale(v.normalize(diff), -5/FPS)), d)
+      }
+      orb.dx = d.x
+      orb.dy = d.y
+    }
+  )
 }
 
 // Game over (player lost).
@@ -195,6 +235,14 @@ const GAME_OVER = {
 function byType(type) {
   return function(obj) {
     return obj.type === type
+  }
+}
+
+function byTypes(types) {
+  const m = {}
+  types.forEach((type) => m[type] = true)
+  return function(obj) {
+    return !!m[obj.type]
   }
 }
 
