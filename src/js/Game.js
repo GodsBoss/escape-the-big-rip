@@ -88,32 +88,31 @@ const TITLE = {
 // Currently playing.
 const PLAYING = {
   id: () => "playing",
-  init: (game) => {
-    game.getObjects().push(
-      {
-        type: "bg-playing",
-        x: 0,
-        y: 0,
-        z: -100000,
-        customSpeed: true
-      }
-    )
-    game.getObjects().push(
-      {
-        type: "ship",
-        x: 10,
-        y: 50,
-        z: 200,
-        offsetX: -6,
-        offsetY: -6,
-        xSpeed: 10,
-        ySpeed: -10,
-        space: new IntValue(4.5, 8, 0.1 / FPS),
-        shield: new IntValue(4, 8, 0.1 / FPS)
-      }
-    )
-  },
+  init: (game) => {},
   start: (game) => {
+    game.setObjects(
+      [
+        {
+          type: "bg-playing",
+          x: 0,
+          y: 0,
+          z: -100000,
+          customSpeed: true
+        },
+        {
+          type: "ship",
+          x: 10,
+          y: 50,
+          z: 200,
+          offsetX: -6,
+          offsetY: -6,
+          xSpeed: 10,
+          ySpeed: -10,
+          space: new IntValue(4.5, 8, 0.1 / FPS),
+          shield: new IntValue(4, 8, 0.1 / FPS)
+        }
+      ]
+    )
     game.data.currentScore = 0
     game.data.density = 0.1
   },
