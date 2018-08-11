@@ -175,13 +175,7 @@ const PLAYING = {
 
     let density = game.data.density
     if (Math.random() < density) {
-      objects.push(createRedDwarf(ship))
-    }
-    if (Math.random() < density) {
-      objects.push(createNeutronStar(ship))
-    }
-    if (Math.random() < density) {
-      objects.push(createRedGiant(ship))
+      objects.push(createDangerousStar(ship))
     }
     if (Math.random() < 0.1 / FPS) {
       objects.push(createPowerup())
@@ -235,9 +229,9 @@ function createPowerup() {
   }
 }
 
-function createRedDwarf(ship) {
-  const dwarf = {
-    type: "red-dwarf",
+function createDangerousStar(ship) {
+  const star = {
+    type: ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])],
     x: 75,
     y: rand.floatn(-100, 300),
     z: 500,
@@ -249,40 +243,10 @@ function createRedDwarf(ship) {
   }
   let dv = v.add(
     v.scale(v.randomDirection(), 2),
-    v.scale(v.normalize(ship, dwarf), 3)
+    v.scale(v.normalize(ship, star), 3)
   )
-  dwarf.dx = dv.x
-  dwarf.dy = dv.y
-  return dwarf
-}
-
-function createNeutronStar(ship) {
-  const star = {
-    type: "neutron-star",
-    x: 75,
-    y: rand.floatn(-100, 300),
-    z: 500,
-    offsetX: -2,
-    offsetY: -2,
-    animation: 0,
-    size: 3,
-    dangerous: true
-  }
-  return star
-}
-
-function createRedGiant(ship) {
-  const star = {
-    type: "red-giant",
-    x: 75,
-    y: rand.floatn(-100, 300),
-    z: 500,
-    offsetX: -15,
-    offsetY: -15,
-    animation: 0,
-    size: 14,
-    dangerous: true
-  }
+  star.dx = dv.x
+  star.dy = dv.y
   return star
 }
 
