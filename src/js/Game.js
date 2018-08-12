@@ -201,25 +201,29 @@ const PLAYING = {
       }
     }
 
-    const collidingPowerupIndex = objects.findIndex(
-      (obj) => obj.powerup && v.length(v.diff(ship, obj)) < obj.size + 6
-    )
-    if (collidingPowerupIndex !== -1) {
-      const powerupType = objects[collidingPowerupIndex].type
-      if (powerupType === 'powerup-shield') {
-        ship.shield.add(1)
-      }
-      if (powerupType === 'powerup-space') {
-        ship.space.add(1)
-      }
-      removeObjectByIndex(objects, collidingPowerupIndex)
-    }
+    collideWithPowerups(ship, objects)
 
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
       )
     )
+  }
+}
+
+function collideWithPowerups(ship, objects) {
+  const collidingPowerupIndex = objects.findIndex(
+    (obj) => obj.powerup && v.length(v.diff(ship, obj)) < obj.size + 6
+  )
+  if (collidingPowerupIndex !== -1) {
+    const powerupType = objects[collidingPowerupIndex].type
+    if (powerupType === 'powerup-shield') {
+      ship.shield.add(1)
+    }
+    if (powerupType === 'powerup-space') {
+      ship.space.add(1)
+    }
+    removeObjectByIndex(objects, collidingPowerupIndex)
   }
 }
 
