@@ -244,10 +244,10 @@ function createDangerousStar(ship) {
     x: 75,
     y: rand.floatn(-100, 300),
     z: 500 + additionalZPerStar[type],
-    offsetX: -10,
-    offsetY: -10,
+    offsetX: offsetPerStar[type],
+    offsetY: offsetPerStar[type],
     animation: 0,
-    size: 8,
+    size: sizePerStar[type],
     dangerous: true
   }
   let dv = v.add(
@@ -263,6 +263,18 @@ const additionalZPerStar = {
   'red-giant': 0,
   'red-dwarf': 10,
   'neutron-star': 20
+}
+
+const sizePerStar = {
+  'red-giant': 12,
+  'red-dwarf': 8,
+  'neutron-star': 3
+}
+
+const offsetPerStar = {
+  'red-giant': -15.5,
+  'red-dwarf': -10.5,
+  'neutron-star': -4.5
 }
 
 function randomStar() {
