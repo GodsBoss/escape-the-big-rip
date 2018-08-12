@@ -142,6 +142,10 @@ const PLAYING = {
     densities.add('red-dwarf', 0.001, (current, progress) => current >= 0.02 ? 0.02 : current + progress / 300)
     densities.add('red-giant', -0.1, (current, progress) => current >= 0.01 ? 0.01 : current + progress / 300)
     densities.add('neutron-star', -0.2, (current, progress) => current >= 0.01 ? 0.01 : current + progress / 300)
+
+    randomStars(50).forEach(
+      (star) => game.getObjects().push(star)
+    )
   },
   tick: (game) => {
     game.data.densities.progress(1/FPS)
@@ -346,18 +350,30 @@ const offsetPerStar = {
   'neutron-star': -4.5
 }
 
-function randomStar() {
+function randomStar(randomX) {
   const minDepth = 1
   const maxDepth = 3
   const starDepth = rand.floatn(minDepth, maxDepth)
+  let x = 160
+  if (randomX) {
+    x = rand.floatn(0, 160)
+  }
   return {
     type: 'star-' + (starDepth > (maxDepth + minDepth) / 2 ? 'small' : 'big') + '-' + rand.char('abcdefg'),
-    x: 160,
+    x: x,
     y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: -1,
     depth: starDepth,
     customSpeed: true
   }
+}
+
+function randomStars(count) {
+  const stars = []
+  for(var i = 0; i < count; i++) {
+    stars.push(randomStar(true))
+  }
+  return stars
 }
 
 function moveByDepth(ship, objects) {
