@@ -517,8 +517,8 @@ function numberToDigits(n, x, y) {
   return objects
 }
 
-const SPAWN_X = 75
-const SPAWN_Y_MIN = -100
-const SPAWN_Y_MAX = 300
+const SPAWN_X = 185
+const SPAWN_Y_MIN = -150
+const SPAWN_Y_MAX = 250
 
 export { Game }
