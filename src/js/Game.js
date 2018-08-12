@@ -157,8 +157,8 @@ const PLAYING = {
     ship.shield.tick()
     ship.space.tick()
 
-    ensureShipOrbs(objects, 'ship-shield', ship.shield.getCurrent(), ship.x, ship.y)
-    ensureShipOrbs(objects, 'ship-space', ship.space.getCurrent(), ship.x, ship.y)
+    ensureShipOrbs(objects, 'ship-shield', 'shield-fade', ship.shield.getCurrent(), ship.x, ship.y)
+    ensureShipOrbs(objects, 'ship-space', 'space-fade', ship.space.getCurrent(), ship.x, ship.y)
 
     gatherAroundShip(ship, objects.filter(byTypes(['ship-shield', 'ship-space'])))
 
@@ -290,7 +290,7 @@ function moveByDepth(ship, objects) {
   )
 }
 
-function ensureShipOrbs(objects, type, targetValue, x, y) {
+function ensureShipOrbs(objects, type, fadeType, targetValue, x, y) {
   const orbs = objects.filter(byType(type))
   const add = targetValue - orbs.length
   const remove = -add
@@ -313,8 +313,37 @@ function ensureShipOrbs(objects, type, targetValue, x, y) {
   }
   for (var i = 0; i < remove; i++) {
     let i = objects.findIndex(byType(type))
+    let orb = objects[i]
+    objects.push(
+      {
+        type: fadeType,
+        x: orb.x,
+        y: orb.y,
+        z: 1000,
+        animation: 0,
+        shipAttached: true,
+        life: 5,
+        fade: true
+      }
+    )
     removeObjectByIndex(objects, i)
-    // TODO: Add fading effect.
+  }
+}
+
+function fadeEffects(objects) {
+  objects.filter(
+    (object) => object.fade
+  ).forEach(
+    (object) => object.life -= 1/FPS
+  )
+  while(true) {
+    const i = objects.findIndex(
+      (object) => object.fade && object.life <= 0
+    )
+    if (i === -1) {
+      break
+    }
+    removeObjectByIndex(objects, i)
   }
 }
 

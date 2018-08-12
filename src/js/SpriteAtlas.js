@@ -193,6 +193,20 @@ const sprites = {
     w: 8,
     h: 8,
     frames: 4
+  },
+  'space-fade': {
+    x: 40,
+    y: 38,
+    w: 5,
+    h: 5,
+    frames: 8
+  },
+  'shield-fade': {
+    x: 40,
+    y: 43,
+    w: 5,
+    h: 5,
+    frames: 8
   }
 }
 
