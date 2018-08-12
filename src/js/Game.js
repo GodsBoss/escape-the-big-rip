@@ -211,6 +211,8 @@ const PLAYING = {
 
     collideWithPowerups(ship, objects)
 
+    fadeEffects(objects)
+
     game.setObjects(
       objects.filter(
         (obj) => typeof obj.x !== 'number' || obj.x > -20
