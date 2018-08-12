@@ -62,7 +62,7 @@ const sprites = {
     h: 13
   },
   'red-dwarf': {
-    x: 0,
+    x: 84,
     y: 17,
     w: 21,
     h: 21,
