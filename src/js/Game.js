@@ -200,16 +200,8 @@ const PLAYING = {
       objects.push(createPowerup())
     }
 
-    const collidingObjectIndex = objects.findIndex(
-      (obj) => obj.dangerous && v.length(v.diff(ship, obj)) < obj.size + 6
-    )
-    if (collidingObjectIndex !== -1) {
-      ship.shield.add(-1)
-      removeObjectByIndex(objects, collidingObjectIndex)
-      if (ship.shield.getCurrent() < 0) {
-        game.nextState(GAME_OVER)
-        return
-      }
+    if (collideWithDangerousObjects(game, objects, ship)) {
+      return
     }
 
     collideWithPowerups(ship, objects)
@@ -219,6 +211,23 @@ const PLAYING = {
         (obj) => typeof obj.x !== 'number' || obj.x > -20
       )
     )
+  }
+}
+
+function collideWithDangerousObjects(game, objects, ship) {
+  while(true) {
+    var collidingObjectIndex = objects.findIndex(
+      (obj) => obj.dangerous && v.length(v.diff(ship, obj)) < obj.size + 6
+    )
+    if (collidingObjectIndex === -1) {
+      return false
+    }
+    ship.shield.add(-1)
+    removeObjectByIndex(objects, collidingObjectIndex)
+    if (ship.shield.getCurrent() < 0) {
+      game.nextState(GAME_OVER)
+      return true
+    }
   }
 }
 
