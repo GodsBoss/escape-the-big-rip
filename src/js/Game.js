@@ -510,6 +510,17 @@ const GAME_OVER = {
         animation: 0
       }
     )
+    objects.push(
+      {
+        type: 'label-score',
+        x: 1,
+        y: 88,
+        z: 1000,
+        label: true
+      }
+    )
+    numberToDigits(game.data.currentScore, 1, 94).forEach((digit) => objects.push(digit))
+
     game.setObjects(objects)
 
     game.data.highScore = Math.max(game.data.highScore, game.data.currentScore)
