@@ -197,7 +197,7 @@ const PLAYING = {
 
     let density = game.data.density
     if (Math.random() < density) {
-      objects.push(createDangerousStar(ship))
+      createDangerousStars(ship).forEach((star) => objects.push(star))
     }
     if (Math.random() < 0.1 / FPS) {
       objects.push(createPowerup())
@@ -293,7 +293,7 @@ function createPowerup() {
   }
 }
 
-function createDangerousStar(ship) {
+function createDangerousStars(ship) {
   const type = ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])]
   const star = {
     type: type,
@@ -312,7 +312,7 @@ function createDangerousStar(ship) {
   )
   star.dx = dv.x
   star.dy = dv.y
-  return star
+  return [star]
 }
 
 const additionalZPerStar = {
