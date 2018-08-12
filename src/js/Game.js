@@ -273,7 +273,7 @@ function collideWithPowerups(ship, objects) {
       ship.shield.add(1)
     }
     if (powerupType === 'powerup-space') {
-      ship.space.add(1)
+      ship.space.add(3)
     }
     removeObjectByIndex(objects, collidingPowerupIndex)
   }
