@@ -60,8 +60,13 @@ class State {
 // Shows title screen.
 const TITLE = {
   id: () => "title",
-  init: (game) => {
-    game.getObjects().push(
+  init: (game) => {},
+  start: (game) => {
+    if (typeof game.data.highScore != "number") {
+      game.data.highScore = 0
+    }
+    const objects = []
+    objects.push(
       {
         type: "bg-playing",
         x: 0,
@@ -69,18 +74,24 @@ const TITLE = {
         z: -100000
       }
     )
-    game.getObjects().push(
+    objects.push(
       {
         type: "bg-title",
         x: 0,
         y: 0
       }
     )
-  },
-  start: (game) => {
-    if (typeof game.data.highScore != "number") {
-      game.data.highScore = 0
-    }
+    objects.push(
+      {
+        type: 'label-hiscore',
+        x: 1,
+        y: 88,
+        z: 1000,
+        label: true
+      }
+    )
+    numberToDigits(game.data.highScore, 1, 94).forEach((digit) => objects.push(digit))
+    game.setObjects(objects)
   },
   tick: (game) => {
     game.getEvents().forEach(
@@ -445,5 +456,22 @@ function removeObjectByIndex(objects, index) {
 }
 
 const FPS = 25
+
+function numberToDigits(n, x, y) {
+  const s = '' + Math.floor(n)
+  const objects = []
+  for(var i = 0; i < s.length; i++) {
+    objects.push(
+      {
+        type: 'digit' + s[i],
+        x: x + i * 6,
+        y: y,
+        z: 10000000,
+        label: true
+      }
+    )
+  }
+  return objects
+}
 
 export { Game }
