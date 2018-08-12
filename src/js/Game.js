@@ -282,7 +282,7 @@ function collideWithPowerups(ship, objects) {
 function createPowerup() {
   return {
     type: Math.random() < 0.5 ? 'powerup-shield' : 'powerup-space',
-    x: 75,
+    x: SPAWN_X,
     y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: 600,
     offsetX: -4,
@@ -297,7 +297,7 @@ function createDangerousStar(ship) {
   const type = ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])]
   const star = {
     type: type,
-    x: 75,
+    x: SPAWN_X,
     y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: 500 + additionalZPerStar[type],
     offsetX: offsetPerStar[type],
@@ -517,6 +517,7 @@ function numberToDigits(n, x, y) {
   return objects
 }
 
+const SPAWN_X = 75
 const SPAWN_Y_MIN = -100
 const SPAWN_Y_MAX = 300
 
