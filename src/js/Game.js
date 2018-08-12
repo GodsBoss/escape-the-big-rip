@@ -1,3 +1,4 @@
+import { Densities } from './Densities'
 import { IntValue } from './IntValue'
 import rand from './random'
 import v from './vector'
@@ -135,8 +136,15 @@ const PLAYING = {
     game.data.currentScore = 0
     game.data.oldCurrentScore = 0
     game.data.density = 0.1
+
+    const densities = new Densities()
+    game.data.densities = densities
+    densities.add('red-dwarf', 0.001, (current, progress) => current >= 0.02 ? 0.02 : current + progress / 300)
+    densities.add('red-giant', -0.1, (current, progress) => current >= 0.01 ? 0.01 : current + progress / 300)
+    densities.add('neutron-star', -0.2, (current, progress) => current >= 0.01 ? 0.01 : current + progress / 300)
   },
   tick: (game) => {
+    game.data.densities.progress(1/FPS)
     let objects =  game.getObjects()
     game.data.oldCurrentScore = game.data.currentScore
     game.data.currentScore++
@@ -193,9 +201,7 @@ const PLAYING = {
 
     moveByDepth(ship, objects)
 
-    game.data.density += 0.0001 / FPS
-
-    createDangerousStars(ship, game.data.density).forEach((star) => objects.push(star))
+    createDangerousStars(ship, game.data.densities).forEach((star) => objects.push(star))
     if (Math.random() < 0.1 / FPS) {
       objects.push(createPowerup())
     }
@@ -290,30 +296,37 @@ function createPowerup() {
   }
 }
 
-function createDangerousStars(ship, density) {
-  if (Math.random() > density) {
-    return []
-  }
-  const type = ['red-dwarf', 'red-giant', 'neutron-star'][rand.intervals([0, 70, 85, 100])]
-  const star = {
-    type: type,
-    x: SPAWN_X,
-    y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
-    z: 500 + additionalZPerStar[type],
-    offsetX: offsetPerStar[type],
-    offsetY: offsetPerStar[type],
-    animation: 0,
-    size: sizePerStar[type],
-    dangerous: true
-  }
-  let dv = v.add(
-    v.scale(v.randomDirection(), 2),
-    v.scale(v.normalize(ship, star), 3)
+function createDangerousStars(ship, densities) {
+  const stars = []
+  starTypes.forEach(
+    (type) => {
+      if (Math.random() > densities.current(type)) {
+        return
+      }
+      const star = {
+        type: type,
+        x: SPAWN_X,
+        y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
+        z: 500 + additionalZPerStar[type],
+        offsetX: offsetPerStar[type],
+        offsetY: offsetPerStar[type],
+        animation: 0,
+        size: sizePerStar[type],
+        dangerous: true
+      }
+      let dv = v.add(
+        v.scale(v.randomDirection(), 2),
+        v.scale(v.normalize(ship, star), 3)
+      )
+      star.dx = dv.x
+      star.dy = dv.y
+      stars.push(star)
+    }
   )
-  star.dx = dv.x
-  star.dy = dv.y
-  return [star]
+  return stars
 }
+
+const starTypes = ['red-dwarf', 'red-giant', 'neutron-star']
 
 const additionalZPerStar = {
   'red-giant': 0,
@@ -542,8 +555,8 @@ function numberToDigits(n, x, y) {
 }
 
 const SPAWN_X = 185
-const SPAWN_Y_MIN = -150
-const SPAWN_Y_MAX = 250
+const SPAWN_Y_MIN = -200
+const SPAWN_Y_MAX = 300
 
 function animate(objects) {
   objects.filter(
