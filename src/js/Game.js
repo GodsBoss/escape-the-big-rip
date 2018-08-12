@@ -63,6 +63,14 @@ const TITLE = {
   init: (game) => {
     game.getObjects().push(
       {
+        type: "bg-playing",
+        x: 0,
+        y: 0,
+        z: -100000
+      }
+    )
+    game.getObjects().push(
+      {
         type: "bg-title",
         x: 0,
         y: 0
@@ -336,6 +344,14 @@ function gatherAroundShip(ship, orbs) {
 const GAME_OVER = {
   id: () => "game_over",
   init: (game) => {
+    game.getObjects().push(
+      {
+        type: "bg-playing",
+        x: 0,
+        y: 0,
+        z: -100000
+      }
+    )
     game.getObjects().push(
       {
         type: "bg-game-over",
