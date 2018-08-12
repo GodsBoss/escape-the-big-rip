@@ -283,7 +283,7 @@ function createPowerup() {
   return {
     type: Math.random() < 0.5 ? 'powerup-shield' : 'powerup-space',
     x: 75,
-    y: rand.floatn(-100, 300),
+    y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: 600,
     offsetX: -4,
     offsetY: -4,
@@ -298,7 +298,7 @@ function createDangerousStar(ship) {
   const star = {
     type: type,
     x: 75,
-    y: rand.floatn(-100, 300),
+    y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: 500 + additionalZPerStar[type],
     offsetX: offsetPerStar[type],
     offsetY: offsetPerStar[type],
@@ -340,7 +340,7 @@ function randomStar() {
   return {
     type: 'star-' + (starDepth > (maxDepth + minDepth) / 2 ? 'small' : 'big') + '-' + rand.char('abcdefg'),
     x: 160,
-    y: rand.floatn(-100, 300),
+    y: rand.floatn(SPAWN_Y_MIN, SPAWN_Y_MAX),
     z: -1,
     depth: starDepth,
     customSpeed: true
@@ -516,5 +516,8 @@ function numberToDigits(n, x, y) {
   }
   return objects
 }
+
+const SPAWN_Y_MIN = -100
+const SPAWN_Y_MAX = 300
 
 export { Game }
