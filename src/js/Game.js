@@ -133,11 +133,16 @@ const PLAYING = {
       ]
     )
     game.data.currentScore = 0
+    game.data.oldCurrentScore = 0
     game.data.density = 0.1
   },
   tick: (game) => {
     let objects =  game.getObjects()
+    game.data.oldCurrentScore = game.data.currentScore
     game.data.currentScore++
+
+    handleScore(objects, game.data.currentScore, game.data.oldCurrentScore)
+
     const ship = objects.find(byType('ship'))
 
     game.getEvents().forEach(
@@ -158,7 +163,7 @@ const PLAYING = {
         if (typeof obj.animation === 'number') {
           obj.animation += 0.1
         }
-        if (obj.type != "ship" && !obj.shipAttached && !obj.customSpeed) {
+        if (obj.type != "ship" && !obj.shipAttached && !obj.customSpeed && !obj.label) {
           obj.x -= ship.xSpeed / FPS
           obj.y -= ship.ySpeed / FPS
         }
@@ -212,6 +217,31 @@ const PLAYING = {
       )
     )
   }
+}
+
+function handleScore(objects, current, previous) {
+  current = Math.floor(current)
+  previous = Math.floor(previous)
+  if (current === previous) {
+    return
+  }
+  while(true) {
+    var index = objects.findIndex((obj) => obj.label)
+    if (index === -1) {
+      break
+    }
+    removeObjectByIndex(objects, index)
+  }
+  objects.push(
+    {
+      type: 'label-score',
+      x: 1,
+      y: 88,
+      z: 1000,
+      label: true
+    }
+  )
+  numberToDigits(current, 1, 94).forEach((digit) => objects.push(digit))
 }
 
 function collideWithDangerousObjects(game, objects, ship) {
