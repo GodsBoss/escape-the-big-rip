@@ -388,6 +388,8 @@ function ensureShipOrbs(objects, type, fadeType, targetValue, x, y) {
         x: orb.x,
         y: orb.y,
         z: 1000,
+        offsetX: -2,
+        offsetY: -2,
         animation: 0,
         shipAttached: true,
         life: 5,
