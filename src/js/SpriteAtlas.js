@@ -38,19 +38,19 @@ function defaultSpriteAtlas() {
 
 const sprites = {
   'bg-title': {
-    x: 481,
+    x: 480,
     y: 0,
     w: 160,
     h: 100
   },
   'bg-playing': {
-    x: 481,
+    x: 480,
     y: 102,
     w: 160,
     h: 100
   },
   'bg-game-over': {
-    x: 481,
+    x: 480,
     y: 204,
     w: 160,
     h: 100
