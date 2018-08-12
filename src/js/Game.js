@@ -128,7 +128,7 @@ const PLAYING = {
           offsetY: -6,
           xSpeed: 10,
           ySpeed: -10,
-          space: new IntValue(4.5, 8, 0.1 / FPS),
+          space: new IntValue(4.5, 8, 0.25 / FPS),
           shield: new IntValue(4, 8, 0.1 / FPS)
         }
       ]
