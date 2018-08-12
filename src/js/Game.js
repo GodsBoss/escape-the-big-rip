@@ -158,11 +158,9 @@ const PLAYING = {
 
     const realXSpeed = ship.xSpeed / FPS
     const realYSpeed = ship.ySpeed / FPS
+    animate(objects)
     objects.forEach(
       (obj) => {
-        if (typeof obj.animation === 'number') {
-          obj.animation += 0.1
-        }
         if (obj.type != "ship" && !obj.shipAttached && !obj.customSpeed && !obj.label) {
           obj.x -= ship.xSpeed / FPS
           obj.y -= ship.ySpeed / FPS
@@ -254,9 +252,11 @@ function collideWithDangerousObjects(game, objects, ship) {
     if (collidingObjectIndex === -1) {
       return false
     }
+    var type = objects[collidingObjectIndex].type
     ship.shield.add(-1)
     removeObjectByIndex(objects, collidingObjectIndex)
     if (ship.shield.getCurrent() < 0) {
+      game.data.deathType = type
       game.nextState(GAME_OVER)
       return true
     }
@@ -442,8 +442,10 @@ function gatherAroundShip(ship, orbs) {
 // Game over (player lost).
 const GAME_OVER = {
   id: () => "game_over",
-  init: (game) => {
-    game.getObjects().push(
+  init: (game) => {},
+  start: (game) => {
+    const objects = []
+    objects.push(
       {
         type: "bg-playing",
         x: 0,
@@ -451,18 +453,40 @@ const GAME_OVER = {
         z: -100000
       }
     )
-    game.getObjects().push(
+    objects.push(
       {
         type: "bg-game-over",
         x: 0,
         y: 0
       }
     )
-  },
-  start: (game) => {
+    objects.push(
+      {
+        type: 'ship-broken',
+        x: 50,
+        y: 60,
+        offsetX: -6,
+        offsetY: -6,
+        z: 1000
+      }
+    )
+    objects.push(
+      {
+        type: game.data.deathType,
+        x: 55,
+        y: 60,
+        z: 500,
+        offsetX: offsetPerStar[game.data.deathType],
+        offsetY: offsetPerStar[game.data.deathType],
+        animation: 0
+      }
+    )
+    game.setObjects(objects)
+
     game.data.highScore = Math.max(game.data.highScore, game.data.currentScore)
   },
   tick: (game) => {
+    animate(game.getObjects())
     game.getEvents().forEach(
       (event) => {
         if (event.type == "keypress" && event.key == " ") {
@@ -520,5 +544,13 @@ function numberToDigits(n, x, y) {
 const SPAWN_X = 185
 const SPAWN_Y_MIN = -150
 const SPAWN_Y_MAX = 250
+
+function animate(objects) {
+  objects.filter(
+    (obj) => typeof obj.animation === 'number'
+  ).forEach(
+    (obj) => obj.animation += 0.1
+  )
+}
 
 export { Game }

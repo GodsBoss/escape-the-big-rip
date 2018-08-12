@@ -61,6 +61,12 @@ const sprites = {
     w: 13,
     h: 13
   },
+  'ship-broken': {
+    x: 13,
+    y: 0,
+    w: 13,
+    h: 13
+  },
   'red-dwarf': {
     x: 84,
     y: 17,
